@@ -75,8 +75,6 @@ window.addEventListener("load", () => {
       .map(([, image]) => image);
 
     displayImages(allImages);
-
-    document.body.classList.remove("loading");
 });
 
 // Clic sur categories
