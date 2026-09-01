@@ -12,7 +12,7 @@ const picsPortrait = document.getElementById("pics-portrait");
 const picsLandscape = document.getElementById("pics-landscape");
 
 const imageModules = import.meta.glob(
-  "/src/assets/**/*.{jpg,jpeg,png,webp,avif}",
+  "/**/*.{jpg,jpeg,png,webp,avif}",
   {
     eager: true,
     import: "default"
