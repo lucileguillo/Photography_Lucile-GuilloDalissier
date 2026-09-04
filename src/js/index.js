@@ -39,7 +39,6 @@ function createImage(image) {
   img.className = "grid__item-img";
   img.src = image;
   img.alt = "Photographie Lucile Guillo-Dalissier";
-  img.loading = "lazy";
   img.decoding = "async";
 
   contentGrid.appendChild(img);
