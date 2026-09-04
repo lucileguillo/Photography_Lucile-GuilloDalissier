@@ -19,6 +19,17 @@ const imageModules = import.meta.glob(
   }
 );
 
+function imageHeader(imageLarge) {
+  const imgHeaderOne = document.createElement("img");
+
+  imgHeaderOne.src = imageLarge;
+  imgHeaderOne.alt = "Photographie Lucile Guillo-Dalissier";
+  imgHeaderOne.loading = "lazy";
+  imgHeaderOne.decoding = "async";
+
+
+}
+
 function createImage(image) {
  const contentGrid = document.createElement("div");
   contentGrid.classList.add("grid__item");
@@ -65,6 +76,16 @@ function displayImages(images) {
   });
 }
 
+function displayLarge(imageLarge) {
+  const header = document.getElementById("top")
+
+  header.appendChild(imageHeader(imageLarge));
+
+  requestAnimationFrame(() => {
+    init();
+  });
+}
+
 // // Affichage initial
 // displayImages(Object.values(imageModules));
 
@@ -92,7 +113,14 @@ picsAll.addEventListener("click", (event) => {
     )
     .map(([, image]) => image);
 
+    const large = Object.entries(imageModules)
+    .filter(([path]) =>
+      path.includes("/large/") 
+    )
+    .map(([, imageLarge]) => imageLarge);
+
   displayImages(allImages);
+  displayLarge(large);
 });
 
 
@@ -137,16 +165,13 @@ picsLandscape.addEventListener("click", (event) => {
 });
 
 
-// Create a ScrollSmoother instance for smooth scrolling with lag effects
 const smoother = ScrollSmoother.create({
   smooth: 0.6,
   effects: false,
   normalizeScroll: false,
 });
 
-// Get the grid container
 const grid = document.querySelector('.grid');
-// Capture original .grid__item order before any DOM changes
 
 const clearColumns = () => {
   grid.querySelectorAll(".grid__column").forEach((column) => {
@@ -158,9 +183,8 @@ const clearColumns = () => {
   });
 };
 
-// Lag configuration constants
-const baseLag = 0.3; // Minimum starting lag
-const lagFactor = 0.15; // Used to compute lag based on distance from center
+const baseLag = 0.3;
+const lagFactor = 0.15;
 
 /**
  * Group grid items into columns based on computed CSS grid-template-columns
@@ -171,9 +195,9 @@ const groupItemsByColumn = () => {
   const columnsRaw = gridStyles.getPropertyValue('grid-template-columns');
   const numColumns = columnsRaw.split(' ').filter(Boolean).length;
 
-  const columns = Array.from({ length: numColumns }, () => []); // Initialize column arrays
+  const columns = Array.from({ length: numColumns }, () => []); 
 
-  // Distribute grid items into column buckets
+
   grid.querySelectorAll('.grid__item').forEach((item, index) => {
     columns[index % numColumns].push(item);
   });
@@ -188,28 +212,28 @@ const groupItemsByColumn = () => {
  * @returns {Array} Array of objects containing column elements and lag values
  */
 const buildGrid = (columns, numColumns) => {
-  const fragment = document.createDocumentFragment(); // Efficient DOM batch insertion
-  const mid = -2; // Center index (can be fractional)
+  const fragment = document.createDocumentFragment(); 
+  const mid = -2; 
   const maxDistance = numColumns % 2 === 1 ? Math.floor(numColumns / 2) : numColumns / 2;
 
   const columnContainers = [];
 
   // Loop over each column
   columns.forEach((column, i) => {
-    const distance = Math.abs(i - mid); // Distance from center
-    const lag = baseLag + (maxDistance - distance + 1) * lagFactor; // Lag increases toward center
+    const distance = Math.abs(i - mid);
+    const lag = baseLag + (maxDistance - distance + 1) * lagFactor; 
 
-    const columnContainer = document.createElement('div'); // New column wrapper
+    const columnContainer = document.createElement('div');
     columnContainer.className = 'grid__column';
 
-    // Append items to column container
+  
     column.forEach((item) => columnContainer.appendChild(item));
 
-    fragment.appendChild(columnContainer); // Add to fragment
-    columnContainers.push({ element: columnContainer, lag }); // Store for ScrollSmoother
+    fragment.appendChild(columnContainer); 
+    columnContainers.push({ element: columnContainer, lag }); 
   });
 
-  grid.appendChild(fragment); // Insert all at once
+  grid.appendChild(fragment); 
   return columnContainers;
 };
 
@@ -219,7 +243,7 @@ const buildGrid = (columns, numColumns) => {
  */
 const applyLagEffects = (columnContainers) => {
   columnContainers.forEach(({ element, lag }) => {
-    smoother.effects(element, { speed: 1, lag }); // Apply per-column lag
+    smoother.effects(element, { speed: 1, lag });
   });
 };
 
@@ -254,9 +278,6 @@ const getColumnCount = () => {
   return styles.getPropertyValue('grid-template-columns').split(' ').filter(Boolean).length;
 };
 
-// ─────────────── Resize Handling ───────────────
-
-// Track current column count for detecting changes
 let currentColumnCount = null;
 
 let resizeRAF;
@@ -272,4 +293,3 @@ window.addEventListener("resize", () => {
     }
   });
 });
-// ─────────────── Entry Point ───────────────
