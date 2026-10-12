@@ -19,16 +19,24 @@ const imageModules = import.meta.glob(
   }
 );
 
-function imageHeader(imageLarge) {
-  const imgHeaderOne = document.createElement("img");
-
-  imgHeaderOne.src = imageLarge;
-  imgHeaderOne.alt = "Photographie Lucile Guillo-Dalissier";
-  imgHeaderOne.loading = "lazy";
-  imgHeaderOne.decoding = "async";
-
-
-}
+const largeImages = {
+  sport: [
+    "large/sport/bretagne-classic26-6.webp",
+    "large/sport/bretagne-classic26.webp",
+  ],
+  concert: [
+    "large/concert/WLG (47).webp",
+    "large/concert/wlg-large.webp",
+  ],
+  portrait: [
+    "large/portrait/portrait-large.webp",
+    "large/portrait/portrait-large2.webp",
+  ],
+  landscape: [
+    "large/paysage/BelleIle (8).webp",
+    "large/paysage/paysage-large.webp",
+  ],
+};
 
 function createImage(image) {
  const contentGrid = document.createElement("div");
@@ -75,30 +83,37 @@ function displayImages(images) {
   });
 }
 
-function displayLarge(imageLarge) {
-  const header = document.getElementById("top")
+function displayLarge(category) {
+  const header = document.getElementById("top");
 
-  header.appendChild(imageHeader(imageLarge));
+  header.innerHTML = "";
 
-  requestAnimationFrame(() => {
-    init();
+  const images = largeImages[category] || [];
+
+  images.forEach((src) => {
+    const img = document.createElement("img");
+
+    img.src = src;
+    img.alt = "Photographie Lucile Guillo-Dalissier";
+    img.loading = "lazy";
+    img.decoding = "async";
+
+    header.appendChild(img);
   });
 }
-
-// // Affichage initial
-// displayImages(Object.values(imageModules));
 
 // Affichage initial
 window.addEventListener("load", () => {
 
   const allImages = Object.entries(imageModules)
     .filter(([path]) =>
-        path.includes("/sport/") ||
-        path.includes("/concert/")
+        path.includes("/sports/") ||
+        path.includes("/concerts/")
       )
       .map(([, image]) => image);
 
     displayImages(allImages);
+    displayLarge("sport");
 });
 
 // Clic sur categories
@@ -107,19 +122,15 @@ picsAll.addEventListener("click", (event) => {
 
   const allImages = Object.entries(imageModules)
     .filter(([path]) =>
-      path.includes("/sport/") ||
-      path.includes("/concert/")
+      path.includes("/sports/") ||
+      path.includes("/concerts/")
     )
     .map(([, image]) => image);
 
-    const large = Object.entries(imageModules)
-    .filter(([path]) =>
-      path.includes("/large/") 
-    )
-    .map(([, imageLarge]) => imageLarge);
+    scroll(0,0)
 
   displayImages(allImages);
-  displayLarge(large);
+  displayLarge("sport");
 });
 
 
@@ -127,30 +138,39 @@ picsSport.addEventListener("click", (event) => {
   event.preventDefault();
 
   const sportImages = Object.entries(imageModules)
-    .filter(([path]) => path.includes("/sport/"))
+    .filter(([path]) => path.includes("/sports/"))
     .map(([, image]) => image);
 
+  scroll(0,0)
+
   displayImages(sportImages);
+  displayLarge("sport");
 });
 
 picsConcert.addEventListener("click", (event) => {
   event.preventDefault();
 
   const concertImages = Object.entries(imageModules)
-    .filter(([path]) => path.includes("/concert/"))
+    .filter(([path]) => path.includes("/concerts/"))
     .map(([, image]) => image);
 
+  scroll(0,0)
+
   displayImages(concertImages);
+  displayLarge("concert");
 });
 
 picsPortrait.addEventListener("click", (event) => {
   event.preventDefault();
 
   const portraitImages = Object.entries(imageModules)
-    .filter(([path]) => path.includes("/portrait/"))
+    .filter(([path]) => path.includes("/portraits/"))
     .map(([, image]) => image);
 
+  scroll(0,0)
+
   displayImages(portraitImages);
+  displayLarge("portrait");
 });
 
 picsLandscape.addEventListener("click", (event) => {
@@ -160,7 +180,10 @@ picsLandscape.addEventListener("click", (event) => {
     .filter(([path]) => path.includes("/Paysages/"))
     .map(([, image]) => image);
 
+  scroll(0,0)
+
   displayImages(landscapeImages);
+  displayLarge("landscape");
 });
 
 

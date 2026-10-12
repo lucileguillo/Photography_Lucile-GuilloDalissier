@@ -211,6 +211,7 @@ a, h1 {
 
 #top{
   position: absolute;
+  width: 100%;
   display: grid;
   margin: 0;
   grid-template-columns: repeat(2, minmax(50%, 1fr));
