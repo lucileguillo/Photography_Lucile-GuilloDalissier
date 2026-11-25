@@ -20,6 +20,10 @@ const imageModules = import.meta.glob(
 );
 
 const largeImages = {
+  accueil: [
+    "large/accueil/jokers-cergy3.webp",
+    "large/accueil/WLG.webp",
+  ],
   sport: [
     "large/sport/bretagne-classic26-6.webp",
     "large/sport/bretagne-classic26.webp",
@@ -113,7 +117,7 @@ window.addEventListener("load", () => {
       .map(([, image]) => image);
 
     displayImages(allImages);
-    displayLarge("sport");
+    displayLarge("accueil");
 });
 
 // Clic sur categories
@@ -130,7 +134,7 @@ picsAll.addEventListener("click", (event) => {
     scroll(0,0)
 
   displayImages(allImages);
-  displayLarge("sport");
+  displayLarge("accueil");
 });
 
 
